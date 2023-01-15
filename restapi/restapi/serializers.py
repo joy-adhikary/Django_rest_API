@@ -16,4 +16,6 @@ class JoySerializer(serializers.ModelSerializer):
     # inner class meta => kon model , r kon kon fields dekhabe 
     class Meta:
         model = Joy
-        fields = ['id','name','description']
+        # fields = ['id','name','description']
+        fields = '__all__'
+      

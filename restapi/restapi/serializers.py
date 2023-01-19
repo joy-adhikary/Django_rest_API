@@ -8,6 +8,7 @@
 from rest_framework import serializers
 
 from .models import Joy
+from .models import Joy1
 
 
 
@@ -18,4 +19,9 @@ class JoySerializer(serializers.ModelSerializer):
         model = Joy
         # fields = ['id','name','description']
         fields = '__all__'
-      
+
+
+class Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = Joy1
+        fields = '__all__'

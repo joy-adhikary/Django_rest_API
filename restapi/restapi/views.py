@@ -1,11 +1,17 @@
-
+from django.shortcuts import render,redirect
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
 from .models import Joy
+from .models import Joy1
 from .serializers import JoySerializer
+from .serializers import Serializer
 # from rest_framework.response import responses
 from rest_framework.response import Response
 from rest_framework import status
+from django.template import loader
+from django.http import HttpResponse
+
+
 
 # resposes r Response er moddhe diffrence ashe .. Response dile ami json data dekhty parbo new created data tar 
 #  for deal with multiple get,post,put,delete request we use @api_view([ .... ]) decorator
@@ -73,9 +79,27 @@ def item(request, id,format=None):
 
 
 
-
-    elif request.method == 'DELETE':
+    if request.method == 'DELETE':
         Joy.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-        
+
+
+@api_view(['GET'])
+
+def alls(request,format=None):
+
+    if request.method == 'GET':
+
+        # get all data using this method. we need to work like this => get all the data => serialize them => send those data using a json response
+        items = Joy1.objects.all()
+        # many=true assign korsi cz amra akta full list ke serialize korbo ajonno eita list er sob gula object ke eita serialize korbe .
+        serializer = Serializer(items, many=True)
+        # return jsonresponse and set safe=false cz we want to  serialize a non-dictionary object
+        # return JsonResponse(serializer.data,safe=False)
+        # or eivabe korle safe nah dilau kno issue hobe nah
+        # return JsonResponse({"Data": serializer.data})
+        # return Response(serializer.data)
+        template = loader.get_template('jo.html',{'hotel' : serializer.data})
+        return HttpResponse(template.render())
+     
